@@ -1,0 +1,46 @@
+﻿<h3>Tabs</h3>
+<div class="container">
+    <div class="tab-links">
+        @foreach (var tab in TabsComponent)
+        {
+            <a @onclick="() => SelectTab(tab)">@tab.Title</a>
+        }
+    </div>
+</div>
+<div class="tab-content">
+    @CurrentTabContent
+</div>
+
+@code {
+    private List<TabModel> TabsComponent { get; set; } = new List<TabModel>();
+
+    private RenderFragment? CurrentTabContent { get; set; }
+
+    private void SelectTab(TabModel tab)
+    {
+        CurrentTabContent = tab.Content;
+    }
+
+    protected override void OnInitialized()
+    {
+     
+        TabsComponent.AddRange(new List<TabModel>
+        {
+            new TabModel("Tab 1", (builder) => builder.AddContent(0, "Content for Tab 1")),
+            new TabModel("Tab 2", (builder) => builder.AddContent(0, "Content for Tab 2")),
+        
+        });
+    }
+
+    private class TabModel
+    {
+        public string Title { get; }
+        public RenderFragment Content { get; }
+
+        public TabModel(string title, RenderFragment content)
+        {
+            Title = title;
+            Content = content;
+        }
+    }
+}

@@ -1,0 +1,104 @@
+﻿@using MyBAC.Shared
+@inject IJSRuntime JSRuntime
+@inject HttpClient httpClient
+
+<DrinkModal OnDrinkSelected="HandleDrinkSelection" />
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+    }
+
+    header {
+        background-color: #f4f4f4;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    nav {
+        justify-content: space-around;
+        font-size: 19px;
+    }
+
+        nav button {
+            padding: 0;
+            cursor: pointer;
+            border: none;
+            background: none;
+            text-decoration: none;
+            color: #872341;
+            margin: 0 10px;
+        }
+
+            nav button:hover {
+                color: #22092C;
+            }
+
+    .tab-content {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 10px;
+    }
+</style>
+
+<header>
+    <nav>
+        <button @onclick="() => SelectTab(1)">About</button>
+        <button @onclick="() => OpenAlcoholModal()">Calculate BAC</button>
+        <button @onclick="() => SelectTab(3)">Did You Know?</button>
+        <button @onclick="() => SelectTab(4)">Resources</button>
+    </nav>
+    <div class="tab-content">
+        @CurrentTabContent
+    </div>
+</header>
+
+@code {
+
+    private string CurrentTabContent { get; set; }
+
+    private void SelectTab(int tabNumber)
+    {
+        
+        switch (tabNumber)
+        {
+            case 1:
+                CurrentTabContent = "About content goes here";
+                break;
+            case 3:
+                CurrentTabContent = "Did You Know content goes here";
+                break;
+            case 4:
+                CurrentTabContent = "Resources content goes here";
+                break;
+            default:
+                CurrentTabContent = "Default content goes here";
+                break;
+        }
+    }
+    private void OpenAlcoholModal()
+    {
+    
+        JSRuntime.InvokeVoidAsync("openModal", "alcoholModal");
+    }
+
+    private void HandleDrinkSelection(string selectedDrink)
+    {
+
+        Console.WriteLine($"Selected Drink Type: {selectedDrink}");
+    }
+}
+
+
+
+
